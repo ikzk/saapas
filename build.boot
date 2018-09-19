@@ -51,8 +51,7 @@
   []
   (comp
    (bat-test)
-   ;; FIXME: This is not a good place to define which namespaces to test
-   (test-cljs :namespaces #{"frontend.core-test"})))
+   (test-cljs)))
 
 (deftask autotest []
   (comp

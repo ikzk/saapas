@@ -4,15 +4,15 @@
 (deps :aliases [:test] :overwrite-boot-deps true :verbose 2)
 
 (require
-  '[adzerk.boot-cljs      :refer [cljs]]
-  '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl repl-env]]
-  '[adzerk.boot-reload    :refer [reload]]
-  '[metosin.bat-test  :refer [bat-test]]
+  '[adzerk.boot-cljs       :refer [cljs]]
+  '[adzerk.boot-cljs-repl  :refer [start-repl]]
+  '[adzerk.boot-reload     :refer [reload]]
+  '[metosin.bat-test       :refer [bat-test]]
   '[metosin.boot-deps-size :refer [deps-size]]
-  '[deraen.boot-less      :refer [less]]
+  '[deraen.boot-less       :refer [less]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]]
-  '[backend.boot          :refer [start-app]]
-  '[reloaded.repl         :refer [go reset start stop system]])
+  '[backend.boot           :refer [start-app]]
+  '[reloaded.repl          :refer [go reset start stop system]])
 
 (task-options!
   pom {:project 'saapas
@@ -35,7 +35,7 @@
             :ids #{"js/main"})
     (less)
     ; This starts a repl server with piggieback middleware
-    (cljs-repl :ids #{"js/main"})
+    (adzerk.boot-cljs-repl/cljs-repl :ids #{"js/main"})
     (cljs :ids #{"js/main"})
     ;; Remove cljs output from classpath but keep with in fileset with output role
     (sift :to-asset #{#"^js/.*"})
@@ -44,14 +44,15 @@
     (start-app :port port)
     (if speak (boot.task.built-in/speak) identity)))
 
-(ns-unmap *ns* 'test)
+;; WARNING: test already refers to: #'clojure.core/test in namespace: boot.user, being replaced by: #'boot.user/testTesting:
+;; (ns-unmap *ns* 'test)
 
 (deftask test
   []
   (comp
-    (bat-test)
-    ;; FIXME: This is not a good place to define which namespaces to test
-    (test-cljs :namespaces #{"frontend.core-test"})))
+   (bat-test)
+   ;; FIXME: This is not a good place to define which namespaces to test
+   (test-cljs :namespaces #{"frontend.core-test"})))
 
 (deftask autotest []
   (comp

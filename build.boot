@@ -69,7 +69,7 @@
   "Build the package"
   []
   (comp
-    (sass :compression true)
+    (sass :output-style :compressed)
     (cljs :optimizations :advanced
           :compiler-options {:preloads nil})
     (aot)

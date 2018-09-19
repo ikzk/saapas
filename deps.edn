@@ -1,0 +1,34 @@
+{:paths       ["src/clj" "src/cljc"]
+ :extra-paths ["src/cljs" "src/less" "test/clj" "test/cljs"]
+ :deps        {org.clojure/clojure         {:mvn/version "1.9.0"}
+               ;; Backend
+               http-kit                    {:mvn/version "2.3.0"}
+               org.clojure/tools.namespace {:mvn/version "0.3.0-alpha4"}
+               reloaded.repl               {:mvn/version "0.2.4"}
+               com.stuartsierra/component  {:mvn/version "0.3.2"}
+               metosin/ring-http-response  {:mvn/version "0.9.0"}
+               ring/ring-core              {:mvn/version "1.6.3"}
+               javax.servlet/servlet-api   {:mvn/version "2.5"} ;; Required by ring multipart middleware
+               compojure                   {:mvn/version "1.6.1"}
+               hiccup                      {:mvn/version "1.0.5"}
+               ;; LESS
+               org.webjars/bootstrap       {:mvn/version "3.3.7-1"}}
+
+ :aliases {:test {:extra-deps {org.clojure/clojurescript   {:scope "test" :mvn/version "1.10.339"}
+                               adzerk/boot-cljs            {:scope "test" :mvn/version "2.1.4"}
+                               crisptrutski/boot-cljs-test {:scope "test" :mvn/version "0.3.4"}
+                               doo                         {:scope "test" :mvn/version "0.1.8"}
+                               adzerk/boot-cljs-repl       {:scope "test" :mvn/version "0.3.3"}
+                               com.cemerick/piggieback     {:scope "test" :mvn/version "0.2.2"}
+                               weasel                      {:scope "test" :mvn/version "0.7.0"}
+                               org.clojure/tools.nrepl     {:scope "test" :mvn/version "0.2.13"}
+                               adzerk/boot-reload          {:scope "test" :mvn/version "0.6.0"}
+                               metosin/bat-test            {:scope "test" :mvn/version "0.4.0"}
+                               metosin/boot-deps-size      {:scope "test" :mvn/version "0.1.0"}
+                               deraen/boot-less            {:scope "test" :mvn/version "0.6.2"}
+                               ;; For boot-less
+                               org.slf4j/slf4j-nop         {:scope "test" :mvn/version "1.7.25"}
+                               ;; Frontend
+                               reagent                     {:scope "test" :mvn/version "0.8.1"}
+                               binaryage/devtools          {:scope "test" :mvn/version "0.9.10"}
+                               cljsjs/babel-standalone     {:scope "test" :mvn/version "6.18.1-3"}}}}}

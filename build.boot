@@ -1,7 +1,9 @@
 (set-env!
  :dependencies '[[seancorfield/boot-tools-deps "0.4.5" :scope "test"]])
 (require '[boot-tools-deps.core :refer [deps]])
-(deps :aliases [:test] :overwrite-boot-deps true :verbose 2)
+(deps :aliases [:test] :quick-merge true :verbose 2)
+
+(print "boot env:" (get-env))
 
 (require
   '[adzerk.boot-cljs       :refer [cljs]]
@@ -11,8 +13,8 @@
   '[metosin.boot-deps-size :refer [deps-size]]
   '[deraen.boot-less       :refer [less]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]]
-  '[backend.boot           :refer [start-app]]
-  '[reloaded.repl          :refer [go reset start stop system]])
+  ;; '[reloaded.repl          :refer [go reset start stop system]]
+  )
 
 (task-options!
   pom {:project 'saapas
@@ -23,11 +25,18 @@
   jar {:main 'backend.main}
   less {:source-map true})
 
+(deftask start-server
+  "Runs the project without building class files. This does not pause execution."
+  []
+  (require 'backend.main)
+  (let [start-app (resolve 'backend.main/start-app)]
+    (with-pass-thru _
+      (start-app))))
+
+
 (deftask dev
   "Start the dev env..."
-  [s speak           bool "Notify when build is done"
-   p port       PORT int  "Port for web server"
-   t test-cljs       bool "Compile and run cljs tests"]
+  [s speak           bool "Notify when build is done"]
   (comp
     (watch)
     (reload :open-file "emacsclient -n +%s:%s %s"
@@ -38,10 +47,12 @@
     (adzerk.boot-cljs-repl/cljs-repl :ids #{"js/main"})
     (cljs :ids #{"js/main"})
     ;; Remove cljs output from classpath but keep with in fileset with output role
-    (sift :to-asset #{#"^js/.*"})
+    ;; don't do this, as compojure (resources) function needs to have these files on classpath
+    ;; (sift :to-asset #{#"^js/.*" #"^css/.*"})
     ;; Write the resources to filesystem for dev server
     (target :dir #{"dev-output"})
-    (start-app :port port)
+    (show :fileset true)
+    (start-server)
     (if speak (boot.task.built-in/speak) identity)))
 
 ;; WARNING: test already refers to: #'clojure.core/test in namespace: boot.user, being replaced by: #'boot.user/testTesting:

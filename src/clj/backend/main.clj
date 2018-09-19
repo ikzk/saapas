@@ -1,16 +1,19 @@
 (ns backend.main
-  (:require [com.stuartsierra.component :as component]
-            reloaded.repl)
+  (:require [mount.core :refer [defstate] :as mount]
+            [taoensso.timbre :as timbre]
+            [plumbing.core :refer :all]
+            [backend.server])
   (:gen-class))
 
-(defn init
-  ([] (init nil))
-  ([opts]
-   (require 'backend.server)
-   ((resolve 'backend.server/new-system) opts)))
+(defn stop-app []
+  (doseq [component (:stopped (mount/stop))]
+    (timbre/info component "stopped"))
+  (shutdown-agents))
 
-(defn setup-app! [opts]
-  (reloaded.repl/set-init! #(init opts)))
+(defn start-app []
+  (doseq [component (-> (mount/start) :started)]
+    (timbre/info component "started"))
+  (.addShutdownHook (Runtime/getRuntime) (Thread. stop-app)))
 
 (defn -main [& args]
-  (component/start (init)))
+  (start-app))

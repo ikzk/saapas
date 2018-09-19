@@ -3,8 +3,8 @@
  :compiler-options {:main            frontend.core
                     :asset-path      "js/main.out"
                     :parallel-build  true
-                    :preloads        [devtools.preload]
-                    :external-config {:devtools/config {:features-to-install [:formatters :hints :async]}}
+                    ;; :preloads        [devtools.preload]
+                    ;; :external-config {:devtools/config {:features-to-install [:formatters :hints :async]}}
                     ;; Node deps test
                                         ; :install-deps true
                                         ; :process-shim true

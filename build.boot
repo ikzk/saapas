@@ -9,7 +9,7 @@
  '[adzerk.boot-reload     :refer [reload]]
  '[metosin.bat-test       :refer [bat-test]]
  '[metosin.boot-deps-size :refer [deps-size]]
- '[deraen.boot-less       :refer [less]]
+ '[deraen.boot-sass       :refer [sass]]
  '[crisptrutski.boot-cljs-test :refer [test-cljs]])
 
 (task-options!
@@ -19,7 +19,7 @@
        :license {"The MIT License (MIT)" "http://opensource.org/licenses/mit-license.php"}}
   aot {:namespace #{'backend.main}}
   jar {:main 'backend.main}
-  less {:source-map true})
+  sass {:source-map true})
 
 (deftask start-server
   "Runs the project without building class files. This does not pause execution."
@@ -40,7 +40,7 @@
     (reload :open-file "emacsclient -n +%s:%s %s"
             ;; Only inject reloading into these builds (= .cljs.edn files)
             :ids #{"js/main"})
-    (less)
+    (sass)
     ; This starts a repl server with piggieback middleware
     (adzerk.boot-cljs-repl/cljs-repl :ids #{"js/main"})
     (cljs :ids #{"js/main"})
@@ -71,7 +71,7 @@
   "Build the package"
   []
   (comp
-    (less :compression true)
+    (sass :compression true)
     (cljs :optimizations :advanced
           :compiler-options {:preloads nil})
     (aot)

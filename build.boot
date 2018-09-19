@@ -1,7 +1,7 @@
 (set-env!
   ; Test path can be included here as source-files are not included in JAR
   ; Just be careful to not AOT them
-  :source-paths #{"src/cljs" "src/less" "src/scss" "test/clj" "test/cljs"}
+  :source-paths #{"src/cljs" "src/less" "test/clj" "test/cljs"}
   :resource-paths #{"src/clj" "src/cljc"}
   :dependencies '[[org.clojure/clojure    "1.9.0"]
                   [org.clojure/clojurescript "1.10.339" :scope "test"]
@@ -19,7 +19,6 @@
                   [deraen/boot-less       "0.6.2"      :scope "test"]
                   ;; For boot-less
                   [org.slf4j/slf4j-nop    "1.7.25"     :scope "test"]
-                  [deraen/boot-sass       "0.3.1"      :scope "test"]
 
                   ; Backend
                   [http-kit "2.3.0"]
@@ -38,9 +37,7 @@
                   [cljsjs/babel-standalone "6.18.1-3" :scope "test"]
 
                   ; LESS
-                  [org.webjars/bootstrap "3.3.7-1"]
-                  ; SASS
-                  [org.webjars.bower/bootstrap "4.1.1" :exclusions [org.webjars.bower/jquery]]])
+                  [org.webjars/bootstrap "3.3.7-1"]])
 
 (require
   '[adzerk.boot-cljs      :refer [cljs]]
@@ -49,7 +46,6 @@
   '[metosin.boot-alt-test  :refer [alt-test]]
   '[metosin.boot-deps-size :refer [deps-size]]
   '[deraen.boot-less      :refer [less]]
-  '[deraen.boot-sass      :refer [sass]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]]
   '[backend.boot          :refer [start-app]]
   '[reloaded.repl         :refer [go reset start stop system]])
@@ -61,22 +57,19 @@
        :license {"The MIT License (MIT)" "http://opensource.org/licenses/mit-license.php"}}
   aot {:namespace #{'backend.main}}
   jar {:main 'backend.main}
-  less {:source-map true}
-  sass {:source-map true})
+  less {:source-map true})
 
 (deftask dev
   "Start the dev env..."
   [s speak           bool "Notify when build is done"
    p port       PORT int  "Port for web server"
-   a use-sass        bool "Use Scss instead of less"
    t test-cljs       bool "Compile and run cljs tests"]
   (comp
     (watch)
-    (reload :open-file "vim --servername saapas --remote-silent +norm%sG%s| %s"
+    (reload :open-file "emacsclient -n +%s:%s %s"
+            ;; Only inject reloading into these builds (= .cljs.edn files)
             :ids #{"js/main"})
-    (if use-sass
-      (sass)
-      (less))
+    (less)
     ; This starts a repl server with piggieback middleware
     (cljs-repl :ids #{"js/main"})
     (cljs :ids #{"js/main"})

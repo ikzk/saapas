@@ -1,20 +1,16 @@
-(set-env!
- :dependencies '[[seancorfield/boot-tools-deps "0.4.5" :scope "test"]])
+(set-env! :dependencies '[[seancorfield/boot-tools-deps "0.4.5" :scope "test"]])
 (require '[boot-tools-deps.core :refer [deps]])
 (deps :aliases [:test] :quick-merge true :verbose 2)
 
-(print "boot env:" (get-env))
-
 (require
-  '[adzerk.boot-cljs       :refer [cljs]]
-  '[adzerk.boot-cljs-repl  :refer [start-repl]]
-  '[adzerk.boot-reload     :refer [reload]]
-  '[metosin.bat-test       :refer [bat-test]]
-  '[metosin.boot-deps-size :refer [deps-size]]
-  '[deraen.boot-less       :refer [less]]
-  '[crisptrutski.boot-cljs-test :refer [test-cljs]]
-  ;; '[reloaded.repl          :refer [go reset start stop system]]
-  )
+ '[taoensso.timbre :as timbre]
+ '[adzerk.boot-cljs       :refer [cljs]]
+ '[adzerk.boot-cljs-repl  :refer [start-repl]]
+ '[adzerk.boot-reload     :refer [reload]]
+ '[metosin.bat-test       :refer [bat-test]]
+ '[metosin.boot-deps-size :refer [deps-size]]
+ '[deraen.boot-less       :refer [less]]
+ '[crisptrutski.boot-cljs-test :refer [test-cljs]])
 
 (task-options!
   pom {:project 'saapas
@@ -38,6 +34,7 @@
   "Start the dev env..."
   [s speak           bool "Notify when build is done"]
   (System/setProperty "conf" "resources/config-dev.edn")
+  (timbre/info "boot env:" (get-env))
   (comp
     (watch)
     (reload :open-file "emacsclient -n +%s:%s %s"

@@ -1,9 +1,11 @@
 # TODO
 
+- [ ] remove clojure backend, use fsharp backend instead. Separate frontend and backend development to separate repos.
 - [ ] Swagger-API
 - [ ] mongodb
 - [ ] Authentication
-- [ ] wrap-reload: https://stackoverflow.com/questions/37104853/how-to-automatically-reload-clojure-code
+
+- [ ] <del>wrap-reload: https://stackoverflow.com/questions/37104853/how-to-automatically-reload-clojure-code</del>
 
 # Saapas
 

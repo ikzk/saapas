@@ -37,6 +37,7 @@
 (deftask dev
   "Start the dev env..."
   [s speak           bool "Notify when build is done"]
+  (System/setProperty "conf" "resources/config-dev.edn")
   (comp
     (watch)
     (reload :open-file "emacsclient -n +%s:%s %s"

@@ -5,7 +5,7 @@
             [compojure.handler :refer [api]]
             [ring.util.response :refer [redirect]]
             [ring.util.http-response :refer :all]
-            [backend.pages.index :refer [index-page test-page]]))
+            [backend.pages.index :refer [index-page]]))
 
 
 (defroutes routes
@@ -23,6 +23,4 @@
 
   (GET "/" []
        ;; Use (resource-response "index.html") to serve index.html from classpath
-       (-> (ok index-page) (content-type "text/html")))
-  (GET "/test" []
-       (-> (ok test-page) (content-type "text/html"))))
+       (-> (ok index-page) (content-type "text/html"))))

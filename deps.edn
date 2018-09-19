@@ -1,13 +1,11 @@
 {:paths       ["src/clj" "src/cljc" "resources"]
  :deps        {org.clojure/clojure         {:mvn/version "1.9.0"}
-               ;; Backend
                org.immutant/web            {:mvn/version "2.1.9"}
                prismatic/plumbing  {:mvn/version "0.5.5"}
                mount               {:mvn/version "0.1.13"}
                com.taoensso/timbre {:mvn/version "4.10.0"}
                ;; https://github.com/tolitius/cprop, read config.edn
                cprop               {:mvn/version "0.1.13"}
-
                metosin/ring-http-response {:mvn/version "0.9.0"}
                ring/ring-core             {:mvn/version "1.6.3"}
                javax.servlet/servlet-api  {:mvn/version "2.5"} ;; Required by ring multipart middleware
@@ -33,5 +31,8 @@
                                org.slf4j/slf4j-nop         {:scope "test" :mvn/version "1.7.25"}
                                ;; Frontend
                                reagent                     {:scope "test" :mvn/version "0.8.1"}
+                               re-frame                    {:scope "test" :mvn/version "0.10.6"}
+                               funcool/bide                {:scope "test" :mvn/version "1.6.0"}
+                               stylefy                     {:scope "test" :mvn/version "1.8.0"}
                                binaryage/devtools          {:scope "test" :mvn/version "0.9.10"}
                                cljsjs/babel-standalone     {:scope "test" :mvn/version "6.18.1-3"}}}}}

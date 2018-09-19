@@ -1,8 +1,6 @@
 (ns frontend.core
-  (:require-macros [frontend.macro :refer [foobar]])
   (:require [reagent.core :as r]
-            [common.hello :refer [foo-cljc]]
-            [foo.bar]))
+            [common.hello :refer [foo-cljc]]))
 
 ;; Reagent application state
 ;; Defonce used to that the state is kept between reloads
@@ -29,12 +27,3 @@
 
 ;; When this namespace is (re)loaded the Reagent app is mounted to DOM
 (start!)
-
-;; Macro test
-(foobar :abc 3)
-
-;; Example of interop call to plain JS in src/cljs/foo.js
-(js/foo)
-
-(comment
-  (println "foo"))

@@ -51,7 +51,7 @@
   []
   (comp
    (bat-test)
-   (test-cljs)))
+   (test-cljs :js-env :node)))
 
 (deftask autotest []
   (comp

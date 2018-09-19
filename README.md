@@ -3,6 +3,7 @@
 - [ ] Swagger-API
 - [ ] mongodb
 - [ ] Authentication
+- [ ] wrap-reload: https://stackoverflow.com/questions/37104853/how-to-automatically-reload-clojure-code
 
 # Saapas
 

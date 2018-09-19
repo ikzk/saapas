@@ -12,18 +12,17 @@
          compojure                  {:mvn/version "1.6.1"}
          hiccup                     {:mvn/version "1.0.5"}
          org.webjars/bootstrap      {:mvn/version "4.1.3"
-                                     :exclusions [org.webjars.bower/jquery]}}
+                                     :exclusions  [org.webjars.bower/jquery]}}
 
  :aliases {:test {:extra-paths ["src/cljs" "src/scss" "test/clj" "test/cljs"]
                   :extra-deps  {org.clojure/clojurescript     {:scope "test" :mvn/version "1.10.339"}
                                 adzerk/boot-cljs              {:scope "test" :mvn/version "2.1.4"}
-                                crisptrutski/boot-cljs-test   {:scope "test" :mvn/version "0.3.4"}
-                                doo                           {:scope "test" :mvn/version "0.1.8"}
+                                powerlaces/boot-figreload     {:scope "test" :mvn/version "0.5.14"}
                                 adzerk/boot-cljs-repl         {:scope "test" :mvn/version "0.3.3"}
                                 com.cemerick/piggieback       {:scope "test" :mvn/version "0.2.2"}
+                                crisptrutski/boot-cljs-test   {:scope "test" :mvn/version "0.3.4"}
                                 weasel                        {:scope "test" :mvn/version "0.7.0"}
-                                org.clojure/tools.nrepl       {:scope "test" :mvn/version "0.2.13"}
-                                adzerk/boot-reload            {:scope "test" :mvn/version "0.6.0"}
+                                doo                           {:scope "test" :mvn/version "0.1.8"}
                                 metosin/bat-test              {:scope "test" :mvn/version "0.4.0"}
                                 metosin/boot-deps-size        {:scope "test" :mvn/version "0.1.0"}
                                 deraen/boot-sass              {:scope "test" :mvn/version "0.3.1"}

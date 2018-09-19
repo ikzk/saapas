@@ -23,4 +23,8 @@
 
   (GET "/" []
        ;; Use (resource-response "index.html") to serve index.html from classpath
-       (-> (ok index-page) (content-type "text/html"))))
+       (-> (ok index-page) (content-type "text/html")))
+
+  (GET "/docs" []
+       ;; Use (resource-response "index.html") to serve index.html from classpath
+       (-> (ok "something") (content-type "text/html"))))

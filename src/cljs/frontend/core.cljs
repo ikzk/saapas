@@ -1,29 +1,88 @@
 (ns frontend.core
-  (:require [reagent.core :as r]
-            [common.hello :refer [foo-cljc]]))
+  (:require [baking-soda.core :as b]
+            [taoensso.timbre :as timbre]
+            [reagent.core :as r]
+            [re-frame.core :as rf]
+            [bide.core :as bide]
+            [frontend.events]
+            [stylefy.core :as stylefy]))
 
-;; Reagent application state
-;; Defonce used to that the state is kept between reloads
-(defonce app-state (r/atom {:y 2017}))
+; the navbar components are implemented via baking-soda [1]
+; library that provides a ClojureScript interface for Reactstrap [2]
+; Bootstrap 4 components.
+; [1] https://github.com/gadfly361/baking-soda
+; [2] http://reactstrap.github.io/
 
-(defn main []
-  [:div
-   [:h1 (foo-cljc (:y @app-state))]
-   [:div.btn-toolbar
-    [:button.btn.btn-danger
-     {:type "button"
-      :on-click #(swap! app-state update :y inc)} "+"]
-    [:button.btn.btn-success
-     {:type "button"
-      :on-click #(swap! app-state update :y dec)} "-"]
-    [:button.btn.btn-default
-     {:type "button"
-      :on-click #(js/console.log @app-state)}
-     "Console.log"]]])
+(defn nav-link [uri title page]
+  [b/NavItem [b/NavLink
+              {:href   uri
+               :active (when (= page @(rf/subscribe [:page])) "active")}
+              title]])
 
-(defn start! []
-  (js/console.log "Starting the app")
-  (r/render-component [main] (js/document.getElementById "app")))
+(defn navbar []
+  (r/with-let [expanded? (r/atom true)]
+    [b/Navbar {:light true
+               :class-name "navbar-dark bg-primary"
+               :expand "md"}
+     [b/NavbarBrand {:href "/"} "my-app"]
+     [b/NavbarToggler {:on-click #(swap! expanded? not)}]
+     [b/Collapse {:is-open @expanded? :navbar true}
+      [b/Nav {:class-name "mr-auto" :navbar true}
+       [nav-link "#/" "Home" :home]
+       [nav-link "#/about" "About" :about]]]]))
 
-;; When this namespace is (re)loaded the Reagent app is mounted to DOM
-(start!)
+(defn about-page []
+  (fn []
+    [:div.container
+     [:div.row
+      [:div.col-md-12
+       "about page"]]]))
+
+(defn home-page []
+  (fn []
+    [:div.container
+     [:div.row>div.col-sm-12
+      [:h2.alert.alert-info "Ahaha"]]
+     (when-let [docs @(rf/subscribe [:docs])]
+       [:div.row>div.col-sm-12
+        [:div (stylefy/use-style {:text-align "center"}) docs]])]))
+
+(defn page []
+  (fn []
+    [:div
+     [navbar]
+     (case @(rf/subscribe [:page])
+       :home  [home-page]
+       :about [about-page])]))
+
+;; -------------------------
+;; Routes
+
+(def bide-router
+  (bide/router [["/" :home]
+                ["/about" :about]]))
+
+;; -------------------------
+;; History
+;; must be called after routes have been defined
+(defn on-navigate
+  [name params query]
+  (rf/dispatch [:navigate name]))
+
+(defn hook-browser-navigation! []
+  (bide/start! bide-router {:default :home
+                            :on-navigate on-navigate}))
+
+;; -------------------------
+;; Initialize app
+(defn mount-components []
+  (rf/clear-subscription-cache!)
+  (r/render [#'page] (.getElementById js/document "app")))
+
+(defn init! []
+  (timbre/info "Starting the app")
+  (rf/dispatch-sync [:navigate :home]) ;; must be sync here to avoid race condition
+  (rf/dispatch-sync [:fetch-docs])
+  (stylefy/init)
+  (hook-browser-navigation!)
+  (mount-components))

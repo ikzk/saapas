@@ -14,7 +14,7 @@
                   [weasel "0.7.0" :scope "test"]
                   [org.clojure/tools.nrepl "0.2.13" :scope "test"]
                   [adzerk/boot-reload     "0.6.0" :scope "test"]
-                  [metosin/boot-alt-test  "0.3.2"      :scope "test"]
+                  [metosin/bat-test       "0.4.0"      :scope "test"]
                   [metosin/boot-deps-size "0.1.0" :scope "test"]
                   [deraen/boot-less       "0.6.2"      :scope "test"]
                   ;; For boot-less
@@ -43,7 +43,7 @@
   '[adzerk.boot-cljs      :refer [cljs]]
   '[adzerk.boot-cljs-repl :refer [cljs-repl start-repl repl-env]]
   '[adzerk.boot-reload    :refer [reload]]
-  '[metosin.boot-alt-test  :refer [alt-test]]
+  '[metosin.bat-test  :refer [bat-test]]
   '[metosin.boot-deps-size :refer [deps-size]]
   '[deraen.boot-less      :refer [less]]
   '[crisptrutski.boot-cljs-test :refer [test-cljs]]
@@ -85,7 +85,7 @@
 (deftask test
   []
   (comp
-    (alt-test)
+    (bat-test)
     ;; FIXME: This is not a good place to define which namespaces to test
     (test-cljs :namespaces #{"frontend.core-test"})))
 

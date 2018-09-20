@@ -1,6 +1,8 @@
 # TODO
 
-- [ ] remove clojure backend, use fsharp backend instead. Separate frontend and backend development to separate repos.
+This project will be a future reference of Clojure stack. I'm going to move to F# stack instead as of now. 
+
+- [ ] <del>remove clojure backend, use fsharp backend instead. Separate frontend and backend development to separate repos.</del>
 - [ ] Swagger-API
 - [ ] mongodb
 - [ ] Authentication
